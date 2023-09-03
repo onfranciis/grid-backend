@@ -2,7 +2,7 @@ import { Response } from "express";
 import { TypedRequestBody, User } from "../types/Models.types";
 import UserModel from "../models/User";
 
-export const RegisterMiddleware = async (
+const RegisterMiddleware = async (
   req: TypedRequestBody<User>,
   res: Response
 ) => {
@@ -47,7 +47,7 @@ export const RegisterMiddleware = async (
       const result = await UserModel.findOne({ email });
 
       if (result) {
-        return res.status(400).send({
+        return res.status(409).send({
           message: "",
           result: null,
           error: "Email already exists!",
@@ -69,7 +69,7 @@ export const RegisterMiddleware = async (
       const result = await UserModel.findOne({ phone_number });
 
       if (result) {
-        return res.status(400).send({
+        return res.status(409).send({
           message: "",
           result: null,
           error: "Phone number already exists!",
@@ -102,3 +102,5 @@ export const RegisterMiddleware = async (
     console.log(error);
   }
 };
+
+export default RegisterMiddleware;
