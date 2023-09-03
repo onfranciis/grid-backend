@@ -1,4 +1,5 @@
-import { RegisterMiddleware } from "../../middlewares/Auth.middlewares";
+import bcrypt from "bcrypt";
+import RegisterMiddleware from "../../middlewares/Register.middlewares";
 import User from "../../models/User";
 import { Controller } from "../../types/Controllers.types";
 
@@ -7,18 +8,32 @@ export const Register: Controller = {
   method: "post",
   handler: async (req, res) => {
     RegisterMiddleware(req, res).then((data) => {
-      if (data === true) {
-        const newUser = new User({ ...req.body });
+      try {
+        console.log(data);
+        if (data === true) {
+          const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+          const newUser = new User({ ...req.body, password: hashedPassword });
 
-        try {
           newUser.save().then((data) => {
-            res.send({
+            res.status(201).send({
+              result: data._id,
               message: `${data.email} has been registered successfully`,
+              error: null,
             });
           });
-        } catch (err) {
-          console.log(err);
+        } else {
+          res.status(500).send({
+            result: null,
+            message: "",
+            error: "Something went wrong!",
+          });
         }
+      } catch (err) {
+        res.status(500).send({
+          result: null,
+          message: "",
+          error: "Something went wrong!",
+        });
       }
     });
   },
