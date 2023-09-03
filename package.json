@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rimraf dist && npx tsc",
     "prestart": "npm run build",
-    "start": "node dist/server.js",
+    "start": "pm2 start ./dist/server.js",
     "preserve": "rimraf dist && npx tsc",
     "serve": "tsc -w & nodemon dist/server.js"
   },
