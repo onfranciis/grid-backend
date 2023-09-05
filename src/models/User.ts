@@ -26,6 +26,7 @@ const userSchema = new Schema<User, Model<User>>({
   password: {
     type: String,
     required: true,
+    select: false,
   },
   service: {
     isSuspended: {
