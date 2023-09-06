@@ -10,7 +10,7 @@ const LoginMiddleware = async (req: TypedRequestBody<User>, res: Response) => {
         .status(400)
         .send({ message: "", result: null, error: "password not found!" });
     } else if (password.trim().length < 8) {
-      return res.status(400).send({
+      return res.status(411).send({
         message: "",
         result: null,
         error: "password should not be less than 8 characters!",
