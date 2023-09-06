@@ -1,17 +1,27 @@
 import bodyParser from "body-parser";
 import express from "express";
-import controllers from "./controllers";
+import cookieParser from "cookie-parser";
+import Controllers from "./controllers";
+import AuthControllers from "./controllers/auth";
 import { GlobalErrorHandler } from "./utils/ErrorHandler";
+import ValidateTokenMiddleware from "./middlewares/ValidateToken.middleware";
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send({ connected: true });
 });
 
-controllers.forEach((controller) => {
+AuthControllers.forEach((controller) => {
+  app[controller.method](controller.path, GlobalErrorHandler(controller));
+});
+
+app.use(ValidateTokenMiddleware);
+
+Controllers.forEach((controller) => {
   app[controller.method](controller.path, GlobalErrorHandler(controller));
 });
 
