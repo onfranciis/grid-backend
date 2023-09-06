@@ -1,4 +1,3 @@
-import { Login } from "./Auth/Login";
-import { Register } from "./Auth/Register";
+import { Users } from "./Users.controller";
 
-export default [Register, Login];
+export default [Users];
