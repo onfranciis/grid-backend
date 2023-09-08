@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
-import config from "./config";
+import config, { environment } from "./config";
 import app from "./app";
 
 mongoose
   .connect(config.dbUrl)
   .then(() => {
     app.listen(config.port, () => {
-      console.log(`Server has started on port ${config.port}`);
+      console.log(
+        `... ${environment} server has started on port ${config.port}`
+      );
     });
   })
   .catch((err) => {
